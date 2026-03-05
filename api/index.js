@@ -18,6 +18,10 @@ const settings = {
     };
   },
 };
+const badNames = [
+  "JMAN", // add more if needed lol
+];
+
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -406,6 +410,14 @@ async function handleTitleDataQuest(req, res) {
 }
 
 async function handleCheckForBadName(req, res) {
+  const body = req.body || {};
+  const room = body?.FunctionArgument?.forRoom;
+  const name = body?.FunctionArgument?.name;
+
+  if (badNames.includes(name)) {
+    return res.status(200).json({ result: 1 });
+  }
+
   return res.status(200).json({ result: 0 });
 }
 
@@ -644,7 +656,9 @@ async function handlePhotonAuthenticatePcvr(req, res) {
 
 module.exports = async function handler(req, res) {
   const url = req.url?.split("?")[0] || "/";
-
+    if (typeof req.body === "string") {
+    try { req.body = JSON.parse(req.body); } catch { req.body = {}; }
+  }
   // CORS headers (optional — add if your game client needs them)
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
