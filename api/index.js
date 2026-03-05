@@ -656,31 +656,58 @@ async function handlePhotonAuthenticatePcvr(req, res) {
 
 module.exports = async function handler(req, res) {
   const url = req.url?.split("?")[0] || "/";
-    if (typeof req.body === "string") {
+  if (typeof req.body === "string") {
     try { req.body = JSON.parse(req.body); } catch { req.body = {}; }
   }
-  // CORS headers (optional — add if your game client needs them)
+
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   if (req.method === "OPTIONS") return res.status(200).end();
 
   if (url === "/" || url === "") return handleRoot(req, res);
-  if (url === "/api/PlayFabAuthentication" && req.method === "POST") return handlePlayFabAuthentication(req, res);
-  if (url === "/api/CachePlayFabId" && req.method === "POST") return handleCachePlayFabId(req, res);
+
+  if (url === "/api/PlayFabAuthentication") {
+    if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed", message: "This endpoint only accepts POST requests fella" });
+    return handlePlayFabAuthentication(req, res);
+  }
+  if (url === "/api/CachePlayFabId") {
+    if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed", message: "This endpoint only accepts POST requests fella" });
+    return handleCachePlayFabId(req, res);
+  }
+  if (url === "/api/UploadGorillanalytics") {
+    if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed", message: "This endpoint only accepts POST requests fella" });
+    return handleUploadGorillanalytics(req, res);
+  }
+  if (url === "/api/ConsumeOculusIAP") {
+    if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed", message: "This endpoint only accepts POST requests fella" });
+    return handleConsumeOculusIAP(req, res);
+  }
+  if (url === "/api/ConsumeCodeItem") {
+    if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed", message: "This endpoint only accepts POST requests fella" });
+    return handleConsumeCodeItem(req, res);
+  }
+  if (url === "/api/photon") {
+    if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed", message: "This endpoint only accepts POST requests fella" });
+    return handlePhoton(req, res);
+  }
+  if (url === "/api/photon/authenticate") {
+    if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed", message: "This endpoint only accepts POST requests fella" });
+    return handlePhotonAuthenticate(req, res);
+  }
+  if (url === "/api/photon/authenticate/pcvr") {
+    if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed", message: "This endpoint only accepts POST requests fella" });
+    return handlePhotonAuthenticatePcvr(req, res);
+  }
+
+  // these accept both GET and POST so no method restriction needed
   if (url === "/api/TitleData") return handleTitleData(req, res);
   if (url === "/api/TitleDataQuest") return handleTitleDataQuest(req, res);
   if (url === "/api/CheckForBadName") return handleCheckForBadName(req, res);
   if (url === "/api/GetAcceptedAgreements") return handleGetAcceptedAgreements(req, res);
-  if (url === "/api/UploadGorillanalytics" && req.method === "POST") return handleUploadGorillanalytics(req, res);
   if (url === "/api/SubmitAcceptedAgreements") return handleSubmitAcceptedAgreements(req, res);
-  if (url === "/api/ConsumeOculusIAP" && req.method === "POST") return handleConsumeOculusIAP(req, res);
-  if (url === "/api/ConsumeCodeItem" && req.method === "POST") return handleConsumeCodeItem(req, res);
   if (url === "/api/v2/GetName") return handleGetName(req, res);
-  if (url === "/api/photon" && req.method === "POST") return handlePhoton(req, res);
   if (url === "/api/v3/photon") return handleV3Photon(req, res);
-  if (url === "/api/photon/authenticate" && req.method === "POST") return handlePhotonAuthenticate(req, res);
-  if (url === "/api/photon/authenticate/pcvr" && req.method === "POST") return handlePhotonAuthenticatePcvr(req, res);
 
   return res.status(404).json({ error: "Not found" });
 };
