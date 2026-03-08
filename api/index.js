@@ -656,9 +656,12 @@ async function handlePhotonAuthenticatePcvr(req, res) {
 
 module.exports = async function handler(req, res) {
   const url = req.url?.split("?")[0] || "/";
-  if (typeof req.body === "string") {
-    try { req.body = JSON.parse(req.body); } catch { req.body = {}; }
+  if (!req.body || typeof req.body === "string") {
+    try { req.body = JSON.parse(req.body || "{}"); } catch { req.body = {}; }
   }
+
+  console.log(`[${new Date().toISOString()}] ${req.method} ${url}`);
+
 
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
