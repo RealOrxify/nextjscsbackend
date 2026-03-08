@@ -521,7 +521,7 @@ async function handleConsumeCodeItem(req, res) {
   const { itemGUID: code, playFabID: playfabId, playFabSessionTicket: sessionTicket } = req.body || {};
   if (!code || !playfabId || !sessionTicket) return res.status(400).json({ error: "Missing parameters" });
 
-  const rawUrl = "https://github.com/RealOrxify/nextjscsbackend"; // replace with your raw GitHub URL
+  const rawUrl = "https://raw.githubusercontent.com/RealOrxify/nextjscsbackend/refs/heads/main/codes.txt"; // replace with your raw GitHub URL
   let lines, codes;
   try {
     const response = await axios.get(rawUrl);
