@@ -398,7 +398,7 @@ async function handlePlayFabAuthentication(req, res) {
     )
     .catch(() => {});
 
-  await sendAuthWebhook({ success: true, playerIp, realIp, customId: rjson.CustomId, playfabId, oculusId: orgScopedId });
+  await sendAuthWebhook({ success: true, playerIp, realIp, customId: rjson.CustomId, playfabId, oculusId: orgScopedId, platform: rjson.Platform, appVersion: rjson.AppVersion, appId: rjson.AppId });
 
   return res.status(200).json({ PlayFabId: playfabId, SessionTicket: sessionTicket, EntityToken: entityToken, EntityId: entityId, EntityType: entityType });
 }
