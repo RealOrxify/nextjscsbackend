@@ -411,14 +411,14 @@ async function handleTitleDataQuest(req, res) {
 
 async function handleCheckForBadName(req, res) {
   const body = req.body || {};
-  const room = body?.FunctionArgument?.forRoom;
-  const name = body?.FunctionArgument?.name;
+  const args = body?.FunctionArgument || body;
+  const name = args?.name;
 
   if (badNames.includes(name)) {
     return res.status(200).json({ result: 1 });
   }
 
-  return res.status(200).json({ result: 0 });
+  return res.status(200).json({ error: "Method not allowed" });
 }
 
 async function handleGetAcceptedAgreements(req, res) {
