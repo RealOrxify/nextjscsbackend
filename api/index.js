@@ -53,24 +53,48 @@ async function sendAuthWebhook({
   oculusId = null,
   errorMessage = null,
   realIp = null,
+  platform = null,
+  appVersion = null,
+  appId = null,
 }) {
   try {
     const ip = realIp || playerIp;
-    let embedData;
+    const timestamp = new Date().toISOString();
 
+    // ansi color codes for discord
+    const reset = "\u001b[0m";
+    const cyan = "\u001b[36m";
+    const white = "\u001b[37m";
+    const red = "\u001b[31m";
+    const yellow = "\u001b[33m";
+
+    let embedData;
     if (success) {
       embedData = {
         content: null,
         embeds: [
           {
             color: 65280,
+            author: { name: "Sigmer Auth" },
+            title: "NORMAL FELLA LOGGED IN!",
             fields: [
               {
-                name: "NORMAL FELLA LOGGED IN!",
-                value: `\`\`\`ini\n[ Player's IP ]: ${ip}\n[Custom ID]: ${customId || "N/A"}\n[Player ID]: ${playfabId || "N/A"}\n[Orgscoped ID]: ${oculusId || "N/A"}\`\`\``,
+                name: "Player Information",
+                value: `\`\`\`ansi\n${cyan}[Custom ID]${reset}:  ${white}${customId || "N/A"}${reset}\n${cyan}[PlayFab ID]${reset}: ${white}${playfabId || "N/A"}${reset}\n${cyan}[OrgScoped ID]${reset}: ${white}${oculusId || "N/A"}${reset}\`\`\``,
+                inline: false,
+              },
+              {
+                name: "Connection Details",
+                value: `\`\`\`ansi\n${cyan}[IP Address]${reset}: ${white}${ip}${reset}\n${cyan}[Platform]${reset}:   ${white}${platform || "N/A"}${reset}\n${cyan}[App Version]${reset}: ${white}${appVersion || "N/A"}${reset}\n${cyan}[App ID]${reset}:     ${white}${appId || "N/A"}${reset}\`\`\``,
+                inline: false,
+              },
+              {
+                name: "Timestamp",
+                value: `\`\`\`ansi\n${cyan}[Time]${reset}: ${white}${timestamp}${reset}\`\`\``,
+                inline: false,
               },
             ],
-            author: { name: "Sigmer Auth" },
+            timestamp,
           },
         ],
       };
@@ -80,13 +104,31 @@ async function sendAuthWebhook({
         embeds: [
           {
             color: 16711680,
+            author: { name: "Sigmer Auth" },
+            title: "INVALID FELLA TRIED TO AUTH!",
             fields: [
               {
-                name: "INVALID FELLA TRIED TO AUTH!",
-                value: `\`\`\`ini\n[ Player's IP ]: ${ip}\n[Custom ID]: ${customId || "N/A"}\n[Orgscoped ID]: ${oculusId || "N/A"}\n[Error]: ${errorMessage || "Unknown Error"}\`\`\``,
+                name: "Player Information",
+                value: `\`\`\`ansi\n${cyan}[Custom ID]${reset}:    ${white}${customId || "N/A"}${reset}\n${cyan}[OrgScoped ID]${reset}: ${white}${oculusId || "N/A"}${reset}\`\`\``,
+                inline: false,
+              },
+              {
+                name: "Connection Details",
+                value: `\`\`\`ansi\n${cyan}[IP Address]${reset}:  ${white}${ip}${reset}\n${cyan}[Platform]${reset}:    ${white}${platform || "N/A"}${reset}\n${cyan}[App Version]${reset}: ${white}${appVersion || "N/A"}${reset}\n${cyan}[App ID]${reset}:      ${white}${appId || "N/A"}${reset}\`\`\``,
+                inline: false,
+              },
+              {
+                name: "Error",
+                value: `\`\`\`ansi\n${red}[Error]${reset}: ${yellow}${errorMessage || "Unknown Error"}${reset}\`\`\``,
+                inline: false,
+              },
+              {
+                name: "Timestamp",
+                value: `\`\`\`ansi\n${cyan}[Time]${reset}: ${white}${timestamp}${reset}\`\`\``,
+                inline: false,
               },
             ],
-            author: { name: "Sigmer Auth" },
+            timestamp,
           },
         ],
       };
