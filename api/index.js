@@ -355,8 +355,6 @@ async function handlePlayFabAuthentication(req, res) {
     return res.status(400).json({ Message: "Bad request", Error: "BadRequest-IncorrectPrefix" });
   }
 
-  await discordMessage(rjson);
-
   let loginRequest;
   try {
     loginRequest = await axios.post(
